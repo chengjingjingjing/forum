@@ -27,15 +27,14 @@ SECRET_KEY = '#8x8t+9cq#7d(fhj5f7nl8$b#kes4o-b2*7lk%#p_05+569u@v'
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
-                 '127.0.0.1',]
-
+                 '127.0.0.1', ]
 
 # Application definition
 
 INSTALLED_APPS = [
     'niuauth',
     'forum',
-    
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,17 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    
+
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
 ]
-
-
-
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
@@ -72,9 +68,9 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-                 os.path.join(BASE_DIR, 'templates', 'allauth'),
-                 os.path.join(BASE_DIR, 'templates'),
-                 ],
+            os.path.join(BASE_DIR, 'templates', 'allauth'),
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,7 +85,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'niuforum.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -99,7 +94,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'niuforum.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -118,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
@@ -169,28 +162,28 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'standard': {
-            'format' : '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d %(message)s'
         },
         'request': {
-            'format' : '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d %(status_code)s %(request)s %(message)s'
+            'format': '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d %(status_code)s %(request)s %(message)s'
         },
     },
     'handlers': {
         'default': {
-            'level':'INFO',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, "logs", "niutool.log"),
-            'maxBytes': 1024*1024*5, # 5 MB
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 10,
-            'formatter':'standard',
-        },  
+            'formatter': 'standard',
+        },
         'request_handler': {
-            'level':'INFO',
-            'class':'logging.handlers.RotatingFileHandler',
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, "logs", "request.log"),
-            'maxBytes': 1024*1024*5, # 5 MB
+            'maxBytes': 1024 * 1024 * 5,  # 5 MB
             'backupCount': 10,
-            'formatter':'request',
+            'formatter': 'request',
         },
     },
     'loggers': {
@@ -210,25 +203,25 @@ SOCIALACCOUNT_QUERY_EMAIL = False
 SOCIALACCOUNT_EMAIL_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = False
 
-#电子邮件
+# 电子邮件
 
-ACCOUNT_ACTIVATION_DAYS=7
+ACCOUNT_ACTIVATION_DAYS = 7
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST='smtp.sina.com'                   #SMTP地址
+EMAIL_HOST = 'smtp.sina.com'  # SMTP地址
 
-EMAIL_PORT='587'
+EMAIL_PORT = '587'
 
-EMAIL_HOST_USER='jinyifei1020@sina.com'
+EMAIL_HOST_USER = 'jinyifei1020@sina.com'
 
-EMAIL_HOST_PASSWORD='******'
+EMAIL_HOST_PASSWORD = '******'
 
-EMAIL_USE_TLS=True
+EMAIL_USE_TLS = True
 
-DEFAULT_FROM_EMAIL='jinyifei1020@sina.com'
+DEFAULT_FROM_EMAIL = 'jinyifei1020@sina.com'
 
-#管理员站点
+# 管理员站点
 
 SERVER_EMAIL = 'jinyifei1020@sina.com'
 
