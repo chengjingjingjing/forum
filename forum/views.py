@@ -73,7 +73,7 @@ class JsonReturn(object):
 
 class AjaxResponseMixin(object):
     def ajax_response(self, json_data):
-        return HttpResponse(json.dumps(json_data.get_data()), content_type = "application/json")
+        return HttpResponse(json.dumps(json_data.get_data()), content_type="application/json")
 
 
 class ForumIndexView(TemplateView):
@@ -86,7 +86,7 @@ class ForumIndexView(TemplateView):
         order = self.kwargs.get('filter', 'default')
 
         if order == 'star':
-            topics = Topic.objects.filter(admin_star = True).all()
+            topics = Topic.objects.filter(admin_star=True).all()
         elif order == 'latest':
             topics = Topic.objects.order_by('-rank', '-date_created').all()
         elif order == 'reply':
@@ -101,7 +101,7 @@ class ForumIndexView(TemplateView):
         data['topics'] = topic_list
         data['page_list'] = page_list
 
-        sections = Section.objects.filter(order__gt = 0).all()
+        sections = Section.objects.filter(order__gt=0).all()
         s_list = []
         for s in sections:
             if s.nodes.all():
@@ -124,12 +124,12 @@ class NodeView(TemplateView):
         data = super(NodeView, self).get_context_data(**kwargs)
 
         node_id = self.kwargs['node_id']
-        node = get_object_or_404(Node, id = node_id)
+        node = get_object_or_404(Node, id=node_id)
         page = self.request.GET.get('page')
         order = self.kwargs.get('filter', 'default')
 
         if order == 'star':
-            topics = node.topics.filter(admin_star = True).all()
+            topics = node.topics.filter(admin_star=True).all()
         elif order == 'latest':
             topics = node.topics.order_by('rank', '-date_created').all()
         elif order == 'reply':
@@ -140,7 +140,7 @@ class NodeView(TemplateView):
 
         watch = False
         if self.request.user.is_authenticated():
-            watch = self.request.user.watch_nodes.filter(id = node_id).exists()
+            watch = self.request.user.watch_nodes.filter(id=node_id).exists()
 
         topic_list, page_list = topic_pagination(page, topics)
         data['node'] = node
@@ -155,7 +155,7 @@ class NodeView(TemplateView):
 node_view = NodeView.as_view()
 
 
-@method_decorator(login_required, name = 'dispatch')
+@method_decorator(login_required, name='dispatch')
 class CreateTopicView(TemplateView):
     template_name = "forum/create_topic.html"
 
@@ -165,7 +165,7 @@ class CreateTopicView(TemplateView):
         node_id = self.kwargs.get('node_id', None)
         default_data = {'node': node_id}
 
-        form = TopicForm(self.request.POST or None, initial = default_data)
+        form = TopicForm(self.request.POST or None, initial=default_data)
         data["form"] = form
         # data["authority"] = self.request.user.profile.can_create_topic()
         data["authority"] = True
@@ -190,13 +190,13 @@ class CreateTopicView(TemplateView):
                 rank = 0
             else:
                 rank = 10
-            topic = Topic(node = node, author = request.user, title = title,
-                          markdown = md, content = rendered, abstract = abstract, rank = rank)
+            topic = Topic(node=node, author=request.user, title=title,
+                          markdown=md, content=rendered, abstract=abstract, rank=rank)
             mentioned = get_metioned_user(request.user, md)
 
             self._commit_changes(topic, mentioned)
 
-            return HttpResponseRedirect(reverse('topic_view', kwargs = {'topic_id': topic.id}))
+            return HttpResponseRedirect(reverse('topic_view', kwargs={'topic_id': topic.id}))
 
         return super(CreateTopicView, self).render_to_response(data)
 
@@ -209,7 +209,7 @@ class CreateTopicView(TemplateView):
                 data['topic'] = topic
 
                 detail = render_to_string("forum/notification/create_topic_notification.html", data)
-                n = Notification(user = u, detail = detail.strip())
+                n = Notification(user=u, detail=detail.strip())
                 u.profile.has_notification = True
                 u.profile.save()
                 u.save()
@@ -219,8 +219,8 @@ class CreateTopicView(TemplateView):
 create_topic_view = CreateTopicView.as_view()
 
 
-@method_decorator(login_required, name = 'dispatch')
-@method_decorator(author_required, name = 'dispatch')
+@method_decorator(login_required, name='dispatch')
+@method_decorator(author_required, name='dispatch')
 class UpdateTopicView(TemplateView):
     template_name = "forum/update_topic.html"
 
@@ -228,12 +228,12 @@ class UpdateTopicView(TemplateView):
         data = super(UpdateTopicView, self).get_context_data(**kwargs)
 
         topic_id = self.kwargs.get('topic_id')
-        topic = get_object_or_404(Topic, id = topic_id)
+        topic = get_object_or_404(Topic, id=topic_id)
         default_data = {'title': topic.title,
                         'content': topic.markdown,
                         'node': topic.node}
 
-        form = TopicForm(self.request.POST or None, initial = default_data)
+        form = TopicForm(self.request.POST or None, initial=default_data)
         data["form"] = form
         data["topic_id"] = topic_id
 
@@ -250,7 +250,7 @@ class UpdateTopicView(TemplateView):
             abstract = Truncator(strip_tags(rendered)).chars(60)
 
             topic_id = self.kwargs.get('topic_id')
-            topic = get_object_or_404(Topic, id = topic_id)
+            topic = get_object_or_404(Topic, id=topic_id)
             topic.node = node
             topic.title = title
             topic.markdown = md
@@ -262,7 +262,7 @@ class UpdateTopicView(TemplateView):
                 topic.rank = 10
             topic.save()
 
-            return HttpResponseRedirect(reverse('topic_view', kwargs = {'topic_id': topic_id}))
+            return HttpResponseRedirect(reverse('topic_view', kwargs={'topic_id': topic_id}))
 
         return super(UpdateTopicView, self).render_to_response(data)
 
@@ -277,7 +277,7 @@ class TopicView(TemplateView):
         data = super(TopicView, self).get_context_data(**kwargs)
 
         topic_id = self.kwargs['topic_id']
-        topic = get_object_or_404(Topic, id = topic_id)
+        topic = get_object_or_404(Topic, id=topic_id)
         data['topic'] = topic
         topic.viewed += 1
         topic.save()
@@ -297,7 +297,7 @@ class TopicView(TemplateView):
 
         ilike = False
         if self.request.user.is_authenticated():
-            ilike = self.request.user.like_topics.filter(id = topic_id).exists()
+            ilike = self.request.user.like_topics.filter(id=topic_id).exists()
 
         data['replies'] = reply_list
         data['page_list'] = page_list
@@ -310,21 +310,21 @@ class TopicView(TemplateView):
 topic_view = TopicView.as_view()
 
 
-@method_decorator(login_required, name = 'dispatch')
+@method_decorator(login_required, name='dispatch')
 class ReplyTopicView(View):
     def post(self, request, *args, **kwargs):
         topic_id = self.kwargs['topic_id']
-        topic = get_object_or_404(Topic, id = topic_id)
+        topic = get_object_or_404(Topic, id=topic_id)
         form = ReplyForm(self.request.POST)
         if form.is_valid():
             md = form.cleaned_data['content']
             rendered = render_markdown(md)
-            reply = Reply(topic = topic, author = request.user, markdown = md, content = rendered)
+            reply = Reply(topic=topic, author=request.user, markdown=md, content=rendered)
 
             mentioned = get_metioned_user(request.user, md)
             self._commit_changes(topic, reply, mentioned)
 
-        return HttpResponseRedirect(reverse('topic_view', kwargs = {'topic_id': topic_id}))
+        return HttpResponseRedirect(reverse('topic_view', kwargs={'topic_id': topic_id}))
 
     @transaction.atomic
     def _commit_changes(self, topic, reply, mentioned_user):
@@ -340,7 +340,7 @@ class ReplyTopicView(View):
                 data['topic'] = topic
 
                 detail = render_to_string("forum/notification/reply_notification.html", data)
-                n = Notification(user = u, detail = detail.strip())
+                n = Notification(user=u, detail=detail.strip())
                 u.profile.has_notification = True
                 u.profile.save()
                 n.save()
@@ -354,7 +354,7 @@ class ReplyTopicView(View):
 reply_topic_view = ReplyTopicView.as_view()
 
 
-@method_decorator(login_required, name = 'dispatch')
+@method_decorator(login_required, name='dispatch')
 class WatchNodeView(AjaxResponseMixin, View):
     def post(self, request, *args, **kwargs):
         node_id = self.kwargs.get('node_id')
@@ -365,7 +365,7 @@ class WatchNodeView(AjaxResponseMixin, View):
             watching = True
 
         try:
-            node = Node.objects.get(id = node_id)
+            node = Node.objects.get(id=node_id)
             if watching:
                 node.watcher.remove(request.user)
                 watching = False
@@ -387,7 +387,7 @@ class WatchNodeView(AjaxResponseMixin, View):
 watch_node_view = WatchNodeView.as_view()
 
 
-@method_decorator(login_required, name = 'dispatch')
+@method_decorator(login_required, name='dispatch')
 class LikeTopicView(AjaxResponseMixin, View):
     def post(self, request, *args, **kwargs):
         topic_id = self.kwargs.get('topic_id')
@@ -398,7 +398,7 @@ class LikeTopicView(AjaxResponseMixin, View):
             ilike = True
 
         try:
-            topic = Topic.objects.get(id = topic_id)
+            topic = Topic.objects.get(id=topic_id)
             if ilike:
                 topic.liker.remove(request.user)
                 ilike = False
@@ -407,7 +407,7 @@ class LikeTopicView(AjaxResponseMixin, View):
                 ilike = True
 
                 if not topic.like_reward and topic.liker.count() >= 10:
-                    user_reward(topic.author, settings.REP_TOPIC_LIKE, topic_id = topic.id)
+                    user_reward(topic.author, settings.REP_TOPIC_LIKE, topic_id=topic.id)
                     topic.like_reward = True
                     topic.author.profile.save()
 

@@ -8,15 +8,15 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
 
 
-def block_code(text, lang, inlinestyles = False, linenos = False):
+def block_code(text, lang, inlinestyles=False, linenos=False):
     if not lang:
         text = text.strip()
         return u'<pre><code>%s</code></pre>\n' % mistune.escape(text)
 
     try:
-        lexer = get_lexer_by_name(lang, stripall = True)
+        lexer = get_lexer_by_name(lang, stripall=True)
         formatter = HtmlFormatter(
-                noclasses = inlinestyles, linenos = linenos
+                noclasses=inlinestyles, linenos=linenos
         )
         code = highlight(text, lexer, formatter)
         if linenos:
@@ -39,12 +39,12 @@ class HighlightMixin(object):
 class UserLinkRendererMixin(object):
     def user_link(self, user):
         try:
-            u = User.objects.get(username = user)
+            u = User.objects.get(username=user)
         except User.DoesNotExist:
             u = None
 
         if u:
-            uurl = reverse('user_profile', kwargs = {'user_id': u.username})
+            uurl = reverse('user_profile', kwargs={'user_id': u.username})
             return "<a class='user niu-link' href='%s'>@%s</a>" % (uurl, user)
         else:
             return "@" + user
@@ -70,8 +70,8 @@ class NiuRenderer(HighlightMixin, UserLinkRendererMixin, mistune.Renderer):
         return new_text
 
 
-renderer = NiuRenderer(linenos = False, inlinestyles = False)
-mdp = mistune.Markdown(escape = True, renderer = renderer)
+renderer = NiuRenderer(linenos=False, inlinestyles=False)
+mdp = mistune.Markdown(escape=True, renderer=renderer)
 
 
 def render_markdown(md):

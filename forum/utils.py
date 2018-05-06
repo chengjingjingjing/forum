@@ -21,7 +21,7 @@ def _thumbnail(upload, size, fmt):
     img = ImageOps.fit(upload, size, Image.ANTIALIAS)
 
     temp = BytesIO()
-    img.save(temp, fmt, quality = 95)
+    img.save(temp, fmt, quality=95)
     temp.seek(0)
 
     return temp
@@ -33,15 +33,15 @@ def create_thumbnail(src, new_name, ext):
 
     large = _thumbnail(upload, (IMAGE_LARGE, IMAGE_LARGE), fmt)
     filename_l = "%s_l.%s" % (new_name, ext)
-    large_file = SimpleUploadedFile(filename_l, large.read(), content_type = src.content_type)
+    large_file = SimpleUploadedFile(filename_l, large.read(), content_type=src.content_type)
 
     medium = _thumbnail(upload, (IMAGE_MEDIUM, IMAGE_MEDIUM), fmt)
     filename_m = "%s_m.%s" % (new_name, ext)
-    medium_file = SimpleUploadedFile(filename_m, medium.read(), content_type = src.content_type)
+    medium_file = SimpleUploadedFile(filename_m, medium.read(), content_type=src.content_type)
 
     small = _thumbnail(upload, (IMAGE_SMALL, IMAGE_SMALL), fmt)
     filename_s = "%s_s.%s" % (new_name, ext)
-    small_file = SimpleUploadedFile(filename_s, small.read(), content_type = src.content_type)
+    small_file = SimpleUploadedFile(filename_s, small.read(), content_type=src.content_type)
 
     return large_file, medium_file, small_file
 
@@ -79,7 +79,7 @@ def topic_pagination(page, topics):
 def author_required(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
         topic_id = kwargs.get('topic_id')
-        topic = get_object_or_404(Topic, id = topic_id)
+        topic = get_object_or_404(Topic, id=topic_id)
 
         if topic.author == request.user:
             return view_func(request, *args, **kwargs)
@@ -93,6 +93,6 @@ def get_metioned_user(sender, markdown):
     mentioned = set(re.findall(MENTION_REGEX, markdown)) - set([sender.username])
     #     mentioned = set(re.findall(MENTION_REGEX, markdown))
     if mentioned:
-        return User.objects.filter(username__in = mentioned)
+        return User.objects.filter(username__in=mentioned)
 
     return None

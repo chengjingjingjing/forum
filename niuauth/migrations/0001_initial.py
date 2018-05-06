@@ -17,33 +17,33 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-                name = 'Notification',
-                fields = [
-                    ('id', models.AutoField(auto_created = True, primary_key = True, serialize = False, verbose_name = 'ID')),
-                    ('date', models.DateTimeField(auto_now = True, db_index = True)),
+                name='Notification',
+                fields=[
+                    ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                    ('date', models.DateTimeField(auto_now=True, db_index=True)),
                     ('detail', models.TextField()),
-                    ('read', models.BooleanField(default = False)),
-                    ('deleted', models.BooleanField(default = False)),
+                    ('read', models.BooleanField(default=False)),
+                    ('deleted', models.BooleanField(default=False)),
                 ],
-                options = {
+                options={
                     'ordering': ['-date'],
                 },
         ),
         migrations.CreateModel(
-                name = 'UserProfile',
-                fields = [
-                    ('user', models.OneToOneField(on_delete = django.db.models.deletion.CASCADE, primary_key = True, related_name = 'profile', serialize = False,
-                                                  to = settings.AUTH_USER_MODEL, verbose_name = 'user')),
+                name='UserProfile',
+                fields=[
+                    ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, related_name='profile', serialize=False,
+                                                  to=settings.AUTH_USER_MODEL, verbose_name='user')),
                     ('avatar', models.TextField()),
-                    ('has_notification', models.BooleanField(default = False)),
+                    ('has_notification', models.BooleanField(default=False)),
                 ],
-                options = {
+                options={
                     'db_table': 'user_profile',
                 },
         ),
         migrations.AddField(
-                model_name = 'notification',
-                name = 'user',
-                field = models.ForeignKey(on_delete = django.db.models.deletion.CASCADE, related_name = 'notifications', to = settings.AUTH_USER_MODEL),
+                model_name='notification',
+                name='user',
+                field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='notifications', to=settings.AUTH_USER_MODEL),
         ),
     ]

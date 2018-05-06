@@ -22,7 +22,7 @@ class NodeAdmin(admin.ModelAdmin):
         super(NodeAdmin, self).save_model(request, obj, form, change)
 
     def _save_icon(self, obj, image):
-        new_name = get_random_string(length = 6)
+        new_name = get_random_string(length=6)
         ext = image.name.split('.')[-1]
         image.name = '%s.%s' % (new_name, ext)
 
