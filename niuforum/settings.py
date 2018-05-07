@@ -26,8 +26,7 @@ SECRET_KEY = '#8x8t+9cq#7d(fhj5f7nl8$b#kes4o-b2*7lk%#p_05+569u@v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost',
-                 '127.0.0.1', ]
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -41,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django.contrib.sites'
+    'django.contrib.sites'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -132,7 +131,7 @@ INTERNAL_IPS = (
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/forum/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
@@ -156,37 +155,23 @@ LOGGING = {
     'formatters': {
         'standard': {
             'format': '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d %(message)s'
-        },
-        'request': {
-            'format': '[%(asctime)s] %(levelname)s %(module)s %(process)d %(thread)d %(status_code)s %(request)s %(message)s'
-        },
+        }
     },
     'handlers': {
-        'default': {
+        'console': {
             'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, "logs", "niutool.log"),
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 10,
-            'formatter': 'standard',
-        },
-        'request_handler': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, "logs", "request.log"),
-            'maxBytes': 1024 * 1024 * 5,  # 5 MB
-            'backupCount': 10,
-            'formatter': 'request',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
         },
     },
     'loggers': {
         'django': {
-            'handlers': ['default'],
+            'handlers': ['console'],
             'propagate': True
         },
         'django.request': {
-            'handlers': ['request_handler'],
-            'propagate': False
+            'handlers': ['console'],
+            'propagate': True
         },
     },
 }
@@ -236,3 +221,7 @@ USER_CREATE_TOPIC = 1
 REP_NEED_SETTING = {
     USER_CREATE_TOPIC: 10,
 }
+
+
+SESSION_COOKIE_NAME = "forum_sessionid"
+CSCOOKIE_NAME = "forum_csrf_token"

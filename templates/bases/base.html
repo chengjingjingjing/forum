@@ -8,13 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{% block description %}{% endblock %}">
   <title>{% block title %}OnlineJudge{% endblock %} - BBS</title>
-
-  {% if debug %}
-  <link rel="stylesheet/less" type="text/css" href='{% static "less/compile.less" %}' />
-  <script type="text/javascript" src='{% static "js/less.js" %}'></script>
-  {% else %}
   <link rel="stylesheet" href='{% static "css/compile.min.css" %}'>
-  {% endif %}
 </head>
 <body>
   <nav class="niu-header navbar navbar-default navbar-static-top">

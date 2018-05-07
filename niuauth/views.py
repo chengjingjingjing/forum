@@ -124,10 +124,14 @@ class AccountLoginView(View):
     def get(self, request, *args, **kwargs):
         token = request.GET.get("token")
         if not token:
-            return HttpResponseRedirect(f"http://127.0.0.1:8080/sso?callback=http://localhost:9001/forum/accounts/login")
+            return HttpResponseRedirect("/sso?callback=/forum/accounts/login")
         else:
             import requests
-            data = requests.post("http://127.0.0.1:8080/api/sso", json={"token": token}).json()["data"]
+            session = requests.Session()
+            session.trust_env = False
+            resp = session.post("http://127.0.0.1:8080/api/sso", json={"token": token})
+            print(resp.text)
+            data = resp.json()["data"]
             try:
                 user = User.objects.get(username=data["username"])
                 user.profile.avatar = data["avatar"]
