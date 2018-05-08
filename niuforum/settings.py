@@ -225,3 +225,4 @@ REP_NEED_SETTING = {
 
 SESSION_COOKIE_NAME = "forum_sessionid"
 CSCOOKIE_NAME = "forum_csrf_token"
+LOGIN_URL = "/forum/accounts/login"
